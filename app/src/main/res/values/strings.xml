@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SteamGuardDump</string>
+    <string name="xposed_desc">Dump your SteamGuard data into your clipboard.</string>
+</resources>
