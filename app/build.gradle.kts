@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -7,6 +8,7 @@ plugins {
 }
 
 android {
+    namespace = "com.yifeplayte.steamguarddump"
     compileSdk = 33
 
     defaultConfig {
@@ -15,6 +17,14 @@ android {
         targetSdk = 33
         versionCode = 2
         versionName = "1.1.0"
+
+        applicationVariants.configureEach {
+            outputs.configureEach {
+                if (this is BaseVariantOutputImpl) {
+                    outputFileName = outputFileName.replace("app", rootProject.name).replace(Regex("debug|release"), versionName)
+                }
+            }
+        }
     }
 
     buildTypes {
@@ -24,13 +34,14 @@ android {
             proguardFiles("proguard-rules.pro")
         }
         named("debug") {
-            versionNameSuffix = "-debug-" + DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
-                .format(LocalDateTime.now())
+            versionNameSuffix = "-debug-" + DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now())
         }
     }
 
     androidResources {
-        additionalParameters("--allow-reserved-package-id", "--package-id", "0x45")
+        additionalParameters += "--allow-reserved-package-id"
+        additionalParameters += "--package-id"
+        additionalParameters += "0x45"
     }
 
     compileOptions {
@@ -40,10 +51,9 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
-    namespace = "com.yifeplayte.steamguarddump"
 }
 
 dependencies {
-    implementation("com.github.kyuubiran:EzXHelper:1.0.3")
+    implementation("com.github.kyuubiran:EzXHelper:2.0.7")
     compileOnly("de.robv.android.xposed:api:82")
 }

@@ -1,1 +1,1 @@
--keep class com.yifeplayte.steamguarddump.MainHook
+-keep class com.yifeplayte.steamguarddump.MainHook { <init>(); }-keep class com.yifeplayte.steamguarddump.hook.hooks.** { <init>(); }-keepattributes RuntimeVisibleAnnotations

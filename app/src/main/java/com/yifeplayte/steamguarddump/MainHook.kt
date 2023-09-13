@@ -1,10 +1,11 @@
 package com.yifeplayte.steamguarddump
 
+import com.github.kyuubiran.ezxhelper.EzXHelper
+import com.github.kyuubiran.ezxhelper.Log
+import com.github.kyuubiran.ezxhelper.LogExtensions.logexIfThrow
 import com.yifeplayte.steamguarddump.hook.BaseHook
-import com.yifeplayte.steamguarddump.hook.GetDecryptedData
-import com.github.kyuubiran.ezxhelper.init.EzXHelperInit
-import com.github.kyuubiran.ezxhelper.utils.Log
-import com.github.kyuubiran.ezxhelper.utils.Log.logexIfThrow
+import com.yifeplayte.steamguarddump.hook.hooks.FromDecryptItem
+import com.yifeplayte.steamguarddump.hook.hooks.FromInvokeExportedMethod
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.IXposedHookZygoteInit
 import de.robv.android.xposed.callbacks.XC_LoadPackage
@@ -12,21 +13,21 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage
 private const val PACKAGE_NAME_HOOKED = "com.valvesoftware.android.steam.community"
 private const val TAG = "SteamGuardDump"
 
-class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit /* Optional */ {
+@Suppress("unused")
+class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         if (lpparam.packageName == PACKAGE_NAME_HOOKED) {
             // Init EzXHelper
-            EzXHelperInit.initHandleLoadPackage(lpparam)
-            EzXHelperInit.setLogTag(TAG)
-            EzXHelperInit.setToastTag(TAG)
+            EzXHelper.initHandleLoadPackage(lpparam)
+            EzXHelper.setLogTag(TAG)
+            EzXHelper.setToastTag(TAG)
             // Init hooks
-            initHooks(GetDecryptedData)
+            initHooks(FromDecryptItem, FromInvokeExportedMethod)
         }
     }
 
-    // Optional
     override fun initZygote(startupParam: IXposedHookZygoteInit.StartupParam) {
-        EzXHelperInit.initZygote(startupParam)
+        EzXHelper.initZygote(startupParam)
     }
 
     private fun initHooks(vararg hook: BaseHook) {
