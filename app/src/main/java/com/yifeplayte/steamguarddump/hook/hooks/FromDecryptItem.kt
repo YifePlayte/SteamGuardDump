@@ -2,6 +2,7 @@ package com.yifeplayte.steamguarddump.hook.hooks
 
 import com.github.kyuubiran.ezxhelper.ClassUtils.loadClass
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHooks
+import com.github.kyuubiran.ezxhelper.MemberExtensions.isNotAbstract
 import com.github.kyuubiran.ezxhelper.finders.MethodFinder.`-Static`.methodFinder
 import com.yifeplayte.steamguarddump.hook.BaseHook
 import com.yifeplayte.steamguarddump.hook.utils.ClipboardUtils.copy
@@ -16,7 +17,7 @@ object FromDecryptItem : BaseHook() {
         methodList.addAll(clazzHybridAESEncrypter.methodFinder().filterByName("decryptItem").toList())
         methodList.addAll(clazzAESEncrypter.methodFinder().filterByName("decryptItem").toList())
         methodList.addAll(clazzLegacySDK20Encrypter.methodFinder().filterByName("decryptItem").toList())
-        methodList.createHooks {
+        methodList.filter { it.isNotAbstract }.createHooks {
             after { param ->
                 val throwable = Throwable()
                 for (i in throwable.stackTrace) {
