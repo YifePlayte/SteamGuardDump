@@ -15,8 +15,8 @@ android {
         applicationId = "com.yifeplayte.steamguarddump"
         minSdk = 24
         targetSdk = 33
-        versionCode = 2
-        versionName = "1.1.0"
+        versionCode = 3
+        versionName = "1.1.1"
 
         applicationVariants.configureEach {
             outputs.configureEach {
