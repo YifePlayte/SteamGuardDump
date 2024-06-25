@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.yifeplayte.steamguarddump"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.yifeplayte.steamguarddump"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 3
         versionName = "1.1.1"
 
@@ -54,6 +54,6 @@ android {
 }
 
 dependencies {
-    implementation("com.github.kyuubiran:EzXHelper:2.0.7")
+    implementation("com.github.kyuubiran:EzXHelper:2.1.2")
     compileOnly("de.robv.android.xposed:api:82")
 }

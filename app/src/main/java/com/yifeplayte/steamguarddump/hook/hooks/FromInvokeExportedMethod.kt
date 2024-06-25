@@ -9,22 +9,28 @@ import com.yifeplayte.steamguarddump.hook.utils.ClipboardUtils.copy
 object FromInvokeExportedMethod : BaseHook() {
     private var targetPromise: Any? = null
     override fun init() {
-        loadClassOrNull("expo.modules.core.ExportedModule")?.apply {
-            methodFinder().filterByName("invokeExportedMethod").firstOrNull()?.createHook {
+        val clazzExportedModule = loadClassOrNull("expo.modules.core.ExportedModule") ?: return
+        clazzExportedModule.methodFinder()
+            .filterByName("invokeExportedMethod")
+            .filterNonAbstract()
+            .singleOrNull()
+            ?.createHook {
                 before { param ->
                     if (param.args[0] == "getValueWithKeyAsync") {
                         val typedArray = (param.args[1] as Collection<Any?>).toTypedArray()
                         if (!(typedArray[0] as String).startsWith("SteamGuard")) return@before
                         targetPromise = typedArray[2]
-                        targetPromise!!.javaClass.methodFinder().filterByName("resolve").firstOrNull()?.createHook {
-                            before {
-                                if (it.thisObject == targetPromise)
-                                    copy(it.args[0] as String)
+                        targetPromise!!.javaClass.methodFinder()
+                            .filterByName("resolve")
+                            .filterNonAbstract()
+                            .singleOrNull()?.createHook {
+                                before {
+                                    if (it.thisObject == targetPromise)
+                                        copy(it.args[0] as String)
+                                }
                             }
-                        }
                     }
                 }
             }
-        }
     }
 }
