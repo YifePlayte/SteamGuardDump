@@ -54,6 +54,9 @@ android {
 }
 
 dependencies {
+    implementation("com.alibaba.fastjson2:fastjson2:2.0.51.android8")
     implementation("com.github.kyuubiran:EzXHelper:2.1.2")
+    implementation("io.matthewnelson.encoding:base32:2.2.1")
+    implementation("io.matthewnelson.encoding:base64:2.2.1")
     compileOnly("de.robv.android.xposed:api:82")
 }
