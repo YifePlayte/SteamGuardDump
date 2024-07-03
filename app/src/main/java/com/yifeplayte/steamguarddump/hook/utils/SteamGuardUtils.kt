@@ -31,6 +31,7 @@ object SteamGuardUtils {
         val accounts = steamGuard.getJSONObject("accounts")
         accounts.keys.forEach { steamId ->
             val account = accounts.getJSONObject(steamId)
+            if (!account.getString("uri").isNullOrEmpty()) return@forEach
             val accountName = account.getString("account_name")
             val sharedSecretBase64 = account.getString("shared_secret")
             val sharedSecretDecoded = sharedSecretBase64.decodeToByteArray(Base64.Default)
