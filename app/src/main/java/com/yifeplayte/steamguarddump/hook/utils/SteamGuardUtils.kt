@@ -1,6 +1,8 @@
 package com.yifeplayte.steamguarddump.hook.utils
 
+import android.content.Context.MODE_PRIVATE
 import com.alibaba.fastjson2.JSON
+import com.github.kyuubiran.ezxhelper.EzXHelper.appContext
 import io.matthewnelson.encoding.base32.Base32
 import io.matthewnelson.encoding.base64.Base64
 import io.matthewnelson.encoding.core.Decoder.Companion.decodeToByteArray
@@ -8,10 +10,26 @@ import io.matthewnelson.encoding.core.Encoder.Companion.encodeToString
 
 object SteamGuardUtils {
     @JvmStatic
-    fun addUriToJson(string: String): String {
-        val steamGuard = JSON.parseObject(string)
+    fun enhanceJson(jsonString: String): String {
+        return jsonString.addUriToJson().addUuidKeyToJson()
+    }
+
+    @JvmStatic
+    private fun String.addUuidKeyToJson(): String {
+        val steamGuard = JSON.parseObject(this)
+        val sharedPreferences = appContext.getSharedPreferences("steam.uuid", MODE_PRIVATE)
+        val uuid = sharedPreferences.getString("uuidKey", "")
+        if (!uuid.isNullOrEmpty()) {
+            steamGuard["uuid_key"] = uuid
+        }
+        return steamGuard.toJSONString()
+    }
+
+    @JvmStatic
+    private fun String.addUriToJson(): String {
+        val steamGuard = JSON.parseObject(this)
         val accounts = steamGuard.getJSONObject("accounts")
-        for (steamId in accounts.keys) {
+        accounts.keys.forEach { steamId ->
             val account = accounts.getJSONObject(steamId)
             val accountName = account.getString("account_name")
             val sharedSecretBase64 = account.getString("shared_secret")

@@ -5,7 +5,7 @@ import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHooks
 import com.github.kyuubiran.ezxhelper.finders.MethodFinder.`-Static`.methodFinder
 import com.yifeplayte.steamguarddump.hook.BaseHook
 import com.yifeplayte.steamguarddump.hook.utils.ClipboardUtils.copy
-import com.yifeplayte.steamguarddump.hook.utils.SteamGuardUtils.addUriToJson
+import com.yifeplayte.steamguarddump.hook.utils.SteamGuardUtils.enhanceJson
 import java.lang.reflect.Method
 
 object FromDecryptItem : BaseHook() {
@@ -32,7 +32,7 @@ object FromDecryptItem : BaseHook() {
                 val throwable = Throwable()
                 for (i in throwable.stackTrace) {
                     if (i.methodName == "readJSONEncodedItem" || i.methodName == "readLegacySDK20Item") {
-                        param.result?.let { copy(addUriToJson(it as String)) }
+                        param.result?.let { copy(enhanceJson(it as String)) }
                         return@after
                     }
                 }

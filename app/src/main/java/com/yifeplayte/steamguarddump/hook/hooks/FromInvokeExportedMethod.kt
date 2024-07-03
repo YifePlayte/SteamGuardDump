@@ -5,7 +5,7 @@ import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHook
 import com.github.kyuubiran.ezxhelper.finders.MethodFinder.`-Static`.methodFinder
 import com.yifeplayte.steamguarddump.hook.BaseHook
 import com.yifeplayte.steamguarddump.hook.utils.ClipboardUtils.copy
-import com.yifeplayte.steamguarddump.hook.utils.SteamGuardUtils.addUriToJson
+import com.yifeplayte.steamguarddump.hook.utils.SteamGuardUtils.enhanceJson
 
 object FromInvokeExportedMethod : BaseHook() {
     private var targetPromise: Any? = null
@@ -27,7 +27,7 @@ object FromInvokeExportedMethod : BaseHook() {
                             .singleOrNull()?.createHook {
                                 before {
                                     if (it.thisObject == targetPromise)
-                                        copy(addUriToJson(it.args[0] as String))
+                                        copy(enhanceJson(it.args[0] as String))
                                 }
                             }
                     }
