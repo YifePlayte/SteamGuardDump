@@ -7,6 +7,11 @@ Dump your SteamGuard data into your clipboard
 
 ---
 
+**这是一个Xposed / LSPosed模块。**  
+**This is an Xposed / LSPosed Module.**  
+
+---
+
 ### 捐赠 / Sponsor
 
 [爱发电 / AFDIAN](https://afdian.com/a/YifePlayte)
